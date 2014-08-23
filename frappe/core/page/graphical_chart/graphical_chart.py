@@ -12,9 +12,10 @@ def formated_date(date_str):
 	return  datetime.datetime.strptime(date_str , '%d-%m-%Y').strftime('%Y-%m-%d')
 	 
 @frappe.whitelist()
-def get_data(from_date=None,to_date=None):
-	data_dict = {'cols':'name ,net_total', 'tab':'`tabSales Order`', 'cond_col': 'delivery_date'}
-	make_cond(data_dict, from_date, to_date)				
+def get_data(from_date=None,to_date=None,currency=None):
+	frappe.errprint(currency)
+	data_dict = {'cols':'name ,net_total', 'tab':'`tabSales Order`', 'cond_col': 'delivery_date','cncy':'currency'}
+	make_cond(data_dict, from_date, to_date,currency)				
 	return{
 		"sales_order_total": make_query(data_dict)
 	}
@@ -28,11 +29,11 @@ def get_jv_data(from_date=None,to_date=None):
 	}
 	
 
-def make_cond(data_dict, from_date=None,to_date=None):
+def make_cond(data_dict, from_date=None,to_date=None,currency=None):
 	if from_date and to_date:
-		data_dict['cond'] = """ where %(cond_col)s between '%(from_date)s' and '%(to_date)s'
+		data_dict['cond'] = """ where %(cond_col)s between '%(from_date)s' and '%(to_date)s and %(cncy)s= '%(currency)s'
 			"""%{'cond_col': data_dict.get('cond_col'), 'from_date': formated_date(from_date),
-					'to_date': formated_date(to_date)}
+					'to_date': formated_date(to_date),'currency':currency, 'cncy':data_dict.get('cncy')}
 	else:
 		data_dict['cond'] = ' '
 
@@ -70,5 +71,26 @@ def get_data_newsale(from_date=None,to_date=None):
 		return{
 		"order_total": sales_details
 	    }
+
+@frappe.whitelist()
+def get_prospect(from_date=None,to_date=None):
+	frappe.errprint("in the pro py")
+	frappe.errprint(from_date)
+	frappe.errprint(to_date)
+
+	if from_date and to_date:
+		str2="select name,sum(target_amount*percentage_allocation/100)as target_amount from (SELECT sp.name,bd.fiscal_year,bdd.month,bdd.percentage_allocation,(select sum(td.target_amount) from `tabTarget Detail` td where td.parent=sp.name and td.fiscal_year=bd.fiscal_year) as target_amount,(case when bdd.month in('January','February','March') then SUBSTRING_INDEX(SUBSTRING_INDEX(bd.fiscal_year, '-', 1), ' ', -1)  else SUBSTRING_INDEX(SUBSTRING_INDEX(bd.fiscal_year, '-', -1), ' ', -1) end) as year FROM `tabSales Person` sp,`tabBudget Distribution` bd,`tabBudget Distribution Detail` bdd where sp.distribution_id=bd.name and bdd.parent=bd.name )foo where date_format(str_to_date(concat('01-',month,'-',year),'%d-%M-%Y'),'%y-%m') between date_format(date('"+formated_date(from_date)+"'),'%y-%m') and date_format(date('"+formated_date(to_date)+"'),'%y-%m') group by name"
+		frappe.errprint(str2)
+		prospect_details=frappe.db.sql(str2,debug=1)
+		frappe.errprint(prospect_details)
+		return{
+		"order_total": prospect_details
+	    }
+	# else:
+	# 	str1="select date_format(creation,'%M') as month,count(*) as lead from `tabLead` order by month"
+	# 	sales_details=frappe.db.sql(str1,debug=1)
+	# 	return{
+	# 	"order_total": sales_details
+	#     }	    
 		    
 

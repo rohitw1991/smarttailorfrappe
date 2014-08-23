@@ -189,19 +189,19 @@ frappe.Chart = Class.extend({
 		make_pie_chart3:function(from_date,to_date){
 		console.log("in the fun");
 		frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_data",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_prospect",
 			args: {
 					from_date:from_date,
 					to_date:to_date
 				},
 			callback: function(r) {
-				console.log(typeof(r.message));
+				console.log(r.message);
 			var options = {packages: ['corechart'], callback : drawChart};
 		    google.load('visualization', '1', options);
 		    function drawChart() {
 		  	 mydata=[['sales','Expenses']];
-		   	 for(var x in r.message.sales_order_total){
-  				mydata.push(r.message.sales_order_total[x]);
+		   	 for(var x in r.message.order_total){
+  				mydata.push(r.message.order_total[x]);
                }
                // console.log(mydata)
 		    var data = google.visualization.arrayToDataTable(mydata);
@@ -217,21 +217,21 @@ frappe.Chart = Class.extend({
 
 	make_column_chart3:function(from_date,to_date){
 		    frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_data",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_prospect",
 			args: {
 					from_date:from_date,
 					to_date:to_date
 				},
 			callback: function(r) {
-				console.log(typeof(r.message));
+				console.log(r.message);
 			var options = {packages: ['corechart'], callback : drawChart};
 		    google.load('visualization', '1', options);
 		    // google.setOnLoadCallback(drawChart);
 		    function drawChart() {
 		  	 mydata=[['sales','Expenses']];
 		  	 // console.log(r.message.sales_order_total[0]);
-		  	 for(var x in r.message.sales_order_total){
-  				mydata.push(r.message.sales_order_total[x]);
+		  	 for(var x in r.message.order_total){
+  				mydata.push(r.message.order_total[x]);
                }
                // console.log(mydata)
 		    var data = google.visualization.arrayToDataTable(mydata);
@@ -581,7 +581,7 @@ frappe.Chart = Class.extend({
          this.group_field2.$input.on("change", function() {
 			    var from_date=me.group_field1.$input.val();
 			 	var to_date=$(this).val();
-			 	console.log(from_date);
+			 	console.log("nt the 2nd");
 			 	console.log(to_date);
 			 	me.make_pie_chart2(from_date,to_date)
 				me.make_column_chart2(from_date,to_date)
@@ -591,7 +591,7 @@ frappe.Chart = Class.extend({
 		make_menu2: function(){
 		var me = this;
 
-    	this.menu_field=frappe.ui.form.make_control({
+    	this.prosp_field=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Link",
 			"options": "Country",
@@ -603,10 +603,10 @@ frappe.Chart = Class.extend({
 		"only_input":true,
 		parent:$(me.wrapper).find("#ctab22"),
 		});
-		this.menu_field.make_input();
+		this.prosp_field.make_input();
 		$(this.wrapper).find("#ctab").css("width","60%");
 
-		this.group_field1=frappe.ui.form.make_control({
+		this.prosp_field1=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Date",
 			"label": "From Date",
@@ -615,10 +615,10 @@ frappe.Chart = Class.extend({
 			},
 		parent:$(me.wrapper).find("#ctab122"),
 		});
-		this.group_field1.make_input();
+		this.prosp_field1.make_input();
 		 $(this.wrapper).find("#ctab122").css("width","100%");
 
-		this.group_field2=frappe.ui.form.make_control({
+		this.prosp_field2=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Date",
 			"label": "To Date",
@@ -627,10 +627,10 @@ frappe.Chart = Class.extend({
 			},
 		parent:$(me.wrapper).find("#ctab222"),
 		});
-		this.group_field2.make_input();
+		this.prosp_field2.make_input();
 		$(this.wrapper).find("#ctab22").css("width","100%");
 
-		this.menu_field=frappe.ui.form.make_control({
+		this.prosp_field=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Link",
 			"options": "Currency",
@@ -642,16 +642,16 @@ frappe.Chart = Class.extend({
 		"only_input":true,
 		parent:$(me.wrapper).find("#ctab322"),
 		});
-		this.menu_field.make_input();
+		this.prosp_field.make_input();
 		$(this.wrapper).find("#ctab322").css("width","200px");
 
-         this.group_field2.$input.on("change", function() {
-			    var from_date=me.group_field1.$input.val();
+         this.prosp_field2.$input.on("change", function() {
+         	    var from_date=me.prosp_field1.$input.val();
 			 	var to_date=$(this).val();
-			 	console.log(from_date);
-			 	console.log(to_date);
-			 	me.make_pie_chart2(from_date,to_date)
-				me.make_column_chart2(from_date,to_date)
+			 	console.log("in the menu2");
+			 	// console.log(to_date);
+			 	me.make_pie_chart3(from_date,to_date)
+				me.make_column_chart3(from_date,to_date)
 		});
 
 	},
@@ -715,10 +715,10 @@ frappe.Chart = Class.extend({
         this.group_field2.$input.on("change", function() {
 			    var from_date=me.group_field1.$input.val();
 			 	var to_date=$(this).val();
-			 	console.log(from_date);
+			 	console.log("in the Prospects");
 			 	console.log(to_date);
-			 	me.make_pie_chart2(from_date,to_date)
-				me.make_column_chart2(from_date,to_date)
+			 	me.make_pie_chart3(from_date,to_date)
+				me.make_column_chart3(from_date,to_date)
 		});
 
 	},
@@ -782,7 +782,7 @@ frappe.Chart = Class.extend({
         this.group_field2.$input.on("change", function() {
 			    var from_date=me.group_field1.$input.val();
 			 	var to_date=$(this).val();
-			 	console.log(from_date);
+			 	console.log("in the menu5");
 			 	console.log(to_date);
 			 	me.make_pie_chart5(from_date,to_date)
 				me.make_column_chart5(from_date,to_date)
