@@ -8,7 +8,7 @@ from frappe import _
 
 from frappe.modules import get_doc_path
 from jinja2 import TemplateNotFound
-from frappe.utils import cint
+from frappe.utils import cint, strip_html
 from frappe.utils.pdf import get_pdf
 
 no_cache = 1
@@ -144,7 +144,7 @@ def make_layout(doc, meta):
 		if df.fieldtype=="HTML" and df.options:
 			doc.set(df.fieldname, True) # show this field
 
-		if is_visible(df) and doc.get(df.fieldname) not in (None, ""):
+		if is_visible(df) and has_value(df, doc):
 			page[-1][-1].append(df)
 
 			# if table, add the row info in the field
@@ -176,13 +176,23 @@ def is_visible(df):
 	no_display = ("Section Break", "Column Break", "Button")
 	return (df.fieldtype not in no_display) and not df.get("__print_hide") and not df.print_hide
 
+def has_value(df, doc):
+	value = doc.get(df.fieldname)
+	if value in (None, ""):
+		return False
+
+	elif isinstance(value, basestring) and not strip_html(value).strip():
+		return False
+
+	return True
+
 def get_print_style(style=None):
 	print_settings = frappe.get_doc("Print Settings")
 
 	if not style:
 		style = print_settings.print_style or "Standard"
 
-	context = {"print_settings": print_settings}
+	context = {"print_settings": print_settings, "print_style": style}
 
 	css = frappe.get_template("templates/styles/standard.css").render(context)
 
@@ -211,11 +221,19 @@ def get_visible_columns(data, table_meta):
 	return columns
 
 def column_has_value(data, fieldname):
+	"""Check if at least one cell in column has non-zero and non-blank value"""
 	has_value = False
+
 	for row in data:
-		if row.get(fieldname) is not None:
-			has_value = True
-			break
+		value = row.get(fieldname)
+		if value:
+			if isinstance(value, basestring):
+				if strip_html(value).strip():
+					has_value = True
+					break
+			else:
+				has_value = True
+				break
 
 	return has_value
 

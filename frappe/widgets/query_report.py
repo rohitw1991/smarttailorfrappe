@@ -14,11 +14,14 @@ import frappe.widgets.reportview
 def get_report_doc(report_name):
 	doc = frappe.get_doc("Report", report_name)
 	if not doc.has_permission("read"):
-		raise frappe.PermissionError("You don't have access to: {report}".format(report=report_name))
+		frappe.throw(_("You don't have access to Report: {0}").format(report_name), frappe.PermissionError)
 
 	if not frappe.has_permission(doc.ref_doctype, "report"):
-		raise frappe.PermissionError("You don't have access to get a report on: {doctype}".format(
-			doctype=doc.ref_doctype))
+		frappe.throw(_("You don't have permission to get a report on: {0}").format(doc.ref_doctype),
+			frappe.PermissionError)
+
+	if doc.disabled:
+		frappe.throw(_("Report {0} is disabled").format(report_name))
 
 	return doc
 
@@ -81,6 +84,7 @@ def run(report_name, filters=()):
 		frappe.msgprint(_("Must have report permission to access this report."),
 			raise_exception=True)
 
+	columns, results = [], []
 	if report.report_type=="Query Report":
 		if not report.query:
 			frappe.msgprint(_("Must specify a Query to run"), raise_exception=True)
