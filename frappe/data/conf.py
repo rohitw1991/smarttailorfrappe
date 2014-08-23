@@ -7,8 +7,12 @@ from __future__ import unicode_literals
 # app configuration
 
 # database config
-db_name = '%(db_name)s'
-db_password = '%(db_password)s'
+# db_name = '%(db_name)s'
+# db_password = '%(db_password)s'
+
+
+db_name = 'root'
+db_password = 'password'
 
 # user attachments stored in
 files_path = 'public/files'
