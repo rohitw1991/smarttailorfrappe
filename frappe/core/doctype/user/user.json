@@ -77,6 +77,50 @@
    "permlevel": 0
   }, 
   {
+   "fieldname": "validity_start_date", 
+   "fieldtype": "Date", 
+   "hidden": 1, 
+   "label": "Validity Start Date", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "validity_end_date", 
+   "fieldtype": "Date", 
+   "hidden": 1, 
+   "label": "Validity End Date", 
+   "permlevel": 0
+  }, 
+  {
+   "default": "", 
+   "fieldname": "no_of_users", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "No of users", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "validity", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "validity", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "sites", 
+   "fieldtype": "Text", 
+   "hidden": 0, 
+   "label": "sites", 
+   "permlevel": 0
+  }, 
+  {
+   "default": "false", 
+   "fieldname": "flag", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "flag", 
+   "permlevel": 0
+  }, 
+  {
    "fieldname": "column_break0", 
    "fieldtype": "Column Break", 
    "oldfieldtype": "Column Break", 
@@ -463,7 +507,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 5, 
- "modified": "2014-07-15 05:34:54.469854", 
+ "modified": "2014-08-25 10:27:40.716231", 
  "modified_by": "Administrator", 
  "module": "Core", 
  "name": "User", 
