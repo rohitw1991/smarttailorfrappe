@@ -91,7 +91,6 @@
    "permlevel": 0
   }, 
   {
-   "default": "", 
    "fieldname": "no_of_users", 
    "fieldtype": "Data", 
    "hidden": 1, 
@@ -108,7 +107,7 @@
   {
    "fieldname": "sites", 
    "fieldtype": "Text", 
-   "hidden": 0, 
+   "hidden": 1, 
    "label": "sites", 
    "permlevel": 0
   }, 
@@ -154,6 +153,14 @@
    "fieldtype": "Password", 
    "label": "New Password", 
    "no_copy": 1, 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "password", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "Password", 
+   "options": "", 
    "permlevel": 0
   }, 
   {
@@ -507,7 +514,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 5, 
- "modified": "2014-08-25 10:27:40.716231", 
+ "modified": "2014-08-22 15:45:45.384495", 
  "modified_by": "Administrator", 
  "module": "Core", 
  "name": "User", 
@@ -559,6 +566,14 @@
    "report": 1, 
    "role": "System Manager", 
    "submit": 0, 
+   "write": 1
+  }, 
+  {
+   "create": 1, 
+   "delete": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Administrator", 
    "write": 1
   }
  ], 
