@@ -130,16 +130,19 @@ class LoginManager:
 	def check_if_enabled(self, user):
 		"""raise exception if user not enabled"""
 		from frappe.utils import cint
-		if user=='Administrator': return
+		if user=='Administrator' or user=='administrator' : return
 		if not cint(frappe.db.get_value('User', user, 'enabled')):
 			self.fail('User disabled or missing')
-
+		user = frappe.db.sql("""select `name` from tabUser where validity_start_date <= CURDATE() and validity_end_date >= CURDATE() and name=%s """, (user))
+		if user:
+			pass
+		else:	
+			self.fail('vaildity end please contact administrator')
 	def check_password(self, user, pwd):
 		"""check password"""
-		user = frappe.db.sql("""select `user` from __Auth where `user`=%s
-			and `password`=password(%s)""", (user, pwd))
+		user = frappe.db.sql("""select `user` from __Auth where `user`=%s and `password`=password(%s)""", (user, pwd))
 		if not user:
-			self.fail('Incorrect password')
+			self.fail('Incorrect password ')
 		else:
 			return user[0][0] # in correct case
 

@@ -76,6 +76,49 @@
    "permlevel": 0
   }, 
   {
+   "fieldname": "validity_start_date", 
+   "fieldtype": "Date", 
+   "hidden": 1, 
+   "label": "Validity Start Date", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "validity_end_date", 
+   "fieldtype": "Date", 
+   "hidden": 1, 
+   "label": "Validity End Date", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "no_of_users", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "No of users", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "validity", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "validity", 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "sites", 
+   "fieldtype": "Text", 
+   "hidden": 1, 
+   "label": "sites", 
+   "permlevel": 0
+  }, 
+  {
+   "default": "false", 
+   "fieldname": "flag", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "flag", 
+   "permlevel": 0
+  }, 
+  {
    "fieldname": "column_break0", 
    "fieldtype": "Column Break", 
    "oldfieldtype": "Column Break", 
@@ -109,6 +152,14 @@
    "fieldtype": "Password", 
    "label": "New Password", 
    "no_copy": 1, 
+   "permlevel": 0
+  }, 
+  {
+   "fieldname": "password", 
+   "fieldtype": "Data", 
+   "hidden": 1, 
+   "label": "Password", 
+   "options": "", 
    "permlevel": 0
   }, 
   {
@@ -462,7 +513,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 5, 
- "modified": "2014-07-15 05:34:54.469854", 
+ "modified": "2014-08-26 09:01:27.099989", 
  "modified_by": "Administrator", 
  "module": "Core", 
  "name": "User", 
@@ -514,6 +565,13 @@
    "report": 1, 
    "role": "System Manager", 
    "submit": 0, 
+   "write": 1
+  }, 
+  {
+   "create": 1, 
+   "permlevel": 0, 
+   "read": 1, 
+   "role": "Administrator", 
    "write": 1
   }
  ], 

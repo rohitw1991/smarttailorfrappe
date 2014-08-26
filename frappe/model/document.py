@@ -169,7 +169,7 @@ class Document(BaseDocument):
 			self.insert()
 			return
 
-		self.check_permission("write", "save")
+		#self.check_permission("write", "save")
 
 		self._set_docstatus_user_and_timestamp()
 		self.check_if_latest()

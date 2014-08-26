@@ -338,6 +338,7 @@ class DbManager:
 
 	def grant_all_privileges(self,target,user):
 		self.db.sql("GRANT ALL PRIVILEGES ON `%s`.* TO '%s'@'localhost';" % (target, user))
+		self.db.sql("GRANT SELECT ON %s.* to 'smarttailor'@'localhost';" %(target))
 
 	def grant_select_privilges(self,db,table,user):
 		if table:

@@ -38,6 +38,30 @@ def get_data():
 					"icon": "icon-eye-open",
 					"name": "Permitted Documents For User",
 					"description": _("Check which Documents are readable by a User")
+				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"doctype": "User",
+					"icon": "icon-eye-open",
+					"name": "Idle Users",
+					"description": _("Check which User are not logged in from specified time ")
+				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"doctype": "User",
+					"icon": "icon-eye-open",
+					"name": "Subscribers Activity",
+					"description": _("Check Subscribers Activity ")
+				},
+				{
+					"type": "report",
+					"is_query_report": True,
+					"doctype": "User",
+					"icon": "icon-eye-open",
+					"name": "SubAdmin Details",
+					"description": _("check SubAdmins Username and Password Details")
 				}
 			]
 		},

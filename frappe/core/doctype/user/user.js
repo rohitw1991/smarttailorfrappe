@@ -42,6 +42,7 @@ cur_frm.cscript.refresh = function(doc) {
 		window.location.reload();
 	}
 
+
 	cur_frm.toggle_display('change_password', !doc.__islocal);
 
 	cur_frm.toggle_display(['sb1', 'sb3'], false);
