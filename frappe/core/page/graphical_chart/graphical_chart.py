@@ -92,5 +92,30 @@ def get_prospect(from_date=None,to_date=None):
 	# 	return{
 	# 	"order_total": sales_details
 	#     }	    
+
+
+@frappe.whitelist()
+def get_subscription(from_date=None,to_date=None):
+	frappe.errprint("in the get_subscription py")
+	#frappe.errprint(from_date)
+	#frappe.errprint(to_date)
+	#frappe.errprint("calling ")
+	if from_date and to_date:
+		str2="select name,EXTRACT(month FROM expiry_date) as expiry_date  from `tabSite Master` where expiry_date between '2013-12-25' and '2015-12-25'"
+		#frappe.errprint(str2)
+		subscription_details=frappe.db.sql(str2,as_list=1)
+		frappe.errprint(subscription_details)
+		return{
+		"order_total": subscription_details
+	    }
+	else:
+		str2="select name,EXTRACT(month FROM expiry_date) as expiry_date  from `tabSite Master` where expiry_date is not null"
+		#frappe.errprint(str2)
+		subscription_details=frappe.db.sql(str2,as_list=1)
+		frappe.errprint(subscription_details)
+		return{
+		"order_total": subscription_details
+	    }
+
 		    
 

@@ -189,7 +189,7 @@ frappe.Chart = Class.extend({
 		make_pie_chart3:function(from_date,to_date){
 		console.log("in the fun");
 		frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_prospect",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_subscription",
 			args: {
 					from_date:from_date,
 					to_date:to_date
@@ -217,13 +217,13 @@ frappe.Chart = Class.extend({
 
 	make_column_chart3:function(from_date,to_date){
 		    frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_prospect",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_subscription",
 			args: {
 					from_date:from_date,
 					to_date:to_date
 				},
 			callback: function(r) {
-				console.log(r.message);
+			console.log(r.message);
 			var options = {packages: ['corechart'], callback : drawChart};
 		    google.load('visualization', '1', options);
 		    // google.setOnLoadCallback(drawChart);

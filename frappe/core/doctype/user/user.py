@@ -134,9 +134,13 @@ class User(Document):
 		key = random_string(32)
 		self.db_set("reset_password_key", key)
 		link = get_url("/update-password?key=" + key)
-
-		# self.send_login_mail("Verify Your Account", "templates/emails/new_user.html", {"link": link})
-		self.send_login_mail2("Verify Your Account",link)
+		from frappe.utils import get_url, cstr
+		frappe.errprint(get_url())
+		if get_url()=='http://smarttailor':
+			self.send_login_mail2("Verify Your Account",link)
+		else:
+			self.send_login_mail("Verify Your Account", "templates/emails/new_user.html", {"link": link})
+		
 
 
 	def send_login_mail2(self, subject,link):
