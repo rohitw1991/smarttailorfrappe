@@ -21,7 +21,15 @@ $("<table class='table table-bordered' style='height:150px; width:800px;'>\
 //for heading
 $('<div id="head" style="height:20px; width:800px;" ><b>Revenue Details</tr></table></div>').appendTo($(wrapper).find('.layout-main-section'));
 
-//for filters
+//for filters`
+// $('<div id="main" style="height:50px; width:800px;" >\
+// 	<table class="table" style="height:5px; width:800px;" >\
+// 	<tr width="100%"><td width="25%" style="min-height:20px;"><div id ="ctab" text-align="left" style="min-height: 10px;min-width:200px" ></div></td>\
+// 	<td width="25%"><div id ="ctab1" text-align="left" style="min-height: 10px;" ></div></td>\
+// 	<td width="25%"><div id ="ctab2" style="min-height: 10px;" ></div></td>\
+// 	<td width="25%"><div id ="ctab3" style="min-height: 10px;" ></div></td>\
+// 	</tr></table></div>').appendTo($(wrapper).find('.layout-main-section'));
+
 $('<div id="main" style="height:50px; width:800px;" >\
 	<table class="table" style="height:5px; width:800px;" >\
 	<tr width="100%"><td width="25%" style="min-height:20px;"><div id ="ctab" text-align="left" style="min-height: 10px;" ></div></td>\
@@ -107,7 +115,7 @@ frappe.Chart = Class.extend({
 		this.wrapper = wrapper;
 		this.body = $(this.wrapper).find(".user-settings");
 		this.make_link();
-		this.make_menu();
+		this.make_revenue_menu();
 		this.make_menu2();
 		this.make_menu4();
 		this.make_menu5();
@@ -128,13 +136,14 @@ frappe.Chart = Class.extend({
 		// $("<html><head>Hi</head></html>").appendTo($(wrapper).find('.layout-side-section'));
 
 		},
-	make_pie_chart:function(from_date,to_date){
+	make_pie_chart:function(from_date,to_date,currency){
 		console.log("in the fun");
 		frappe.call({
 			method:"frappe.core.page.graphical_chart.graphical_chart.get_data",
 			args: {
 					from_date:from_date,
-					to_date:to_date
+					to_date:to_date,
+					currency:currency
 				},
 			callback: function(r) {
 				console.log(r.message);
@@ -157,12 +166,13 @@ frappe.Chart = Class.extend({
 	    });
 		},
 
-	make_column_chart:function(from_date,to_date){
+	make_column_chart:function(from_date,to_date,currency){
 		    frappe.call({
 			method:"frappe.core.page.graphical_chart.graphical_chart.get_data",
 			args: {
 					from_date:from_date,
-					to_date:to_date
+					to_date:to_date,
+					currency:currency
 				},
 			callback: function(r) {
 				console.log(typeof(r.message));
@@ -189,7 +199,7 @@ frappe.Chart = Class.extend({
 		make_pie_chart3:function(from_date,to_date){
 		console.log("in the fun");
 		frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_subscription",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_prospect",
 			args: {
 					from_date:from_date,
 					to_date:to_date
@@ -217,7 +227,7 @@ frappe.Chart = Class.extend({
 
 	make_column_chart3:function(from_date,to_date){
 		    frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_subscription",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_prospect",
 			args: {
 					from_date:from_date,
 					to_date:to_date
@@ -247,7 +257,7 @@ frappe.Chart = Class.extend({
 	make_pie_chart4:function(from_date,to_date){
 		console.log("in the fun");
 		frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_data",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_subscription",
 			args: {
 					from_date:from_date,
 					to_date:to_date
@@ -275,7 +285,7 @@ frappe.Chart = Class.extend({
 
 	make_column_chart4:function(from_date,to_date){
 		    frappe.call({
-			method:"frappe.core.page.graphical_chart.graphical_chart.get_data",
+			method:"frappe.core.page.graphical_chart.graphical_chart.get_subscription",
 			args: {
 					from_date:from_date,
 					to_date:to_date
@@ -302,12 +312,13 @@ frappe.Chart = Class.extend({
 		    }
 	    });
 	},
-	make_column_chart2:function(from_date,to_date){
+	make_column_chart2:function(from_date,to_date,currency){
 	frappe.call({
 			method:"frappe.core.page.graphical_chart.graphical_chart.get_jv_data",
 			args: {
 					from_date:from_date,
-					to_date:to_date
+					to_date:to_date,
+					currency:currency
 				},
 			callback: function(r) {
 				console.log(typeof(r.message));
@@ -331,14 +342,15 @@ frappe.Chart = Class.extend({
 		}
 	});
 	},
-	make_pie_chart2:function(from_date,to_date){
+	make_pie_chart2:function(from_date,to_date,currency){
 		    console.log("in the pie chart two");
 
 			frappe.call({
 			method:"frappe.core.page.graphical_chart.graphical_chart.get_jv_data",
 			args: {
 					from_date:from_date,
-					to_date:to_date
+					to_date:to_date,
+					currency:currency
 				},
 			callback: function(r) {
 				console.log(typeof(r.message));
@@ -503,26 +515,48 @@ frappe.Chart = Class.extend({
 		this.to_date = this.wrapper.appframe.add_date(
 			"To Date").change(function()
 			 {	
+
 			 	var from_date=me.from_date.val();
 			 	var to_date=$(this).val();
+			 	if(from_date < to_date)
+			 	
+			 	{
+			 		console.log("in same ");
 			 	me.make_pie_chart(from_date,to_date)
 				me.make_column_chart(from_date,to_date)
+				}else
+				{
+					msgprint(__("Please enter valid date."));
+				}	
 				
 			 	});
 
-		this.country = this.wrapper.appframe.add_field({
+
+		this.currency= this.wrapper.appframe.add_field({
 			fieldname: "currency",
 			label: __("Currency"),
 			fieldtype: "Link",
 			options: "Currency"
 		});
-	
+		
+		this.currency.$input.on("change", function() {
+			    var from_date=me.from_date.val();
+			    var to_date=me.to_date.val();
+			 	var currency=$(this).val();
+			 	console.log("nt the 2nd");
+			 	console.log(to_date);
+			 	console.log(currency);
+			 	me.make_pie_chart(from_date,to_date,currency)
+				me.make_column_chart(from_date,to_date,currency)
+				console.log("hh");
+		});		
+
 	
     },
-	make_menu: function(){
+	make_revenue_menu: function(){
 		var me = this;
 
-    	this.menu_field=frappe.ui.form.make_control({
+    	this.revenue_field=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Link",
 			"options": "Country",
@@ -534,10 +568,10 @@ frappe.Chart = Class.extend({
 		"only_input":true,
 		parent:$(me.wrapper).find("#ctab"),
 		});
-		this.menu_field.make_input();
+		this.revenue_field.make_input();
 		$(this.wrapper).find("#ctab").css("width","200px");
 
-		this.group_field1=frappe.ui.form.make_control({
+		this.revenue_field1=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Date",
 			"label": "From Date",
@@ -546,10 +580,10 @@ frappe.Chart = Class.extend({
 			},
 		parent:$(me.wrapper).find("#ctab1"),
 		});
-		this.group_field1.make_input();
+		this.revenue_field1.make_input();
 		 $(this.wrapper).find("#ctab1").css("width","200px");
 
-		this.group_field2=frappe.ui.form.make_control({
+		this.revenue_field2=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Date",
 			"label": "To Date",
@@ -558,10 +592,10 @@ frappe.Chart = Class.extend({
 			},
 		parent:$(me.wrapper).find("#ctab2"),
 		});
-		this.group_field2.make_input();
+		this.revenue_field2.make_input();
 		$(this.wrapper).find("#ctab2").css("width","200px");
 
-		this.menu_field=frappe.ui.form.make_control({
+		this.revenue_field3=frappe.ui.form.make_control({
 		df: {
 		    "fieldtype": "Link",
 			"options": "Currency",
@@ -573,13 +607,13 @@ frappe.Chart = Class.extend({
 		"only_input":true,
 		parent:$(me.wrapper).find("#ctab3"),
 		});
-		this.menu_field.make_input();
+		this.revenue_field3.make_input();
 		$(this.wrapper).find("#ctab3").css("width","200px");
 
 
 
-         this.group_field2.$input.on("change", function() {
-			    var from_date=me.group_field1.$input.val();
+        this.revenue_field2.$input.on("change", function() {
+			    var from_date=me.revenue_field1.$input.val();
 			 	var to_date=$(this).val();
 			 	console.log("nt the 2nd");
 			 	console.log(to_date);
@@ -587,7 +621,18 @@ frappe.Chart = Class.extend({
 				me.make_column_chart2(from_date,to_date)
 		});
 
-	},
+
+        this.revenue_field3.$input.on("change", function() {
+			    var from_date=me.revenue_field1.$input.val();
+			    var to_date=me.revenue_field1.$input.val();
+			 	var currency=$(this).val();
+			 	console.log("nt the 2nd");
+			 	console.log(to_date);
+			 	me.make_pie_chart2(from_date,to_date)
+				me.make_column_chart2(from_date,to_date)
+		});
+
+},
 		make_menu2: function(){
 		var me = this;
 
@@ -715,10 +760,10 @@ frappe.Chart = Class.extend({
         this.group_field2.$input.on("change", function() {
 			    var from_date=me.group_field1.$input.val();
 			 	var to_date=$(this).val();
-			 	console.log("in the Prospects");
+			 	console.log("in Subscrption");
 			 	console.log(to_date);
-			 	me.make_pie_chart3(from_date,to_date)
-				me.make_column_chart3(from_date,to_date)
+			 	me.make_pie_chart4(from_date,to_date)
+				me.make_column_chart4(from_date,to_date)
 		});
 
 	},
@@ -787,6 +832,8 @@ frappe.Chart = Class.extend({
 			 	me.make_pie_chart5(from_date,to_date)
 				me.make_column_chart5(from_date,to_date)
 		});
+
+
 
 	},
 	show_active_users: function() {
